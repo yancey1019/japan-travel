@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>岡山廣島福岡自由行 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F7F6F3; /* 日式和風米白 */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .active-tab {
+            color: #BC3E34; /* 鳥居朱紅 */
+            border-bottom: 3px solid #BC3E34;
+        }
+        /* 隱藏滾動條但保持功能 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="pb-24 max-w-md mx-auto bg-white shadow-xl min-h-screen relative">
+
+    <header class="bg-[#1E2736] text-white p-4 sticky top-0 z-50 shadow-md safe-top">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-bold tracking-wider">山陽九州縱走</h1>
+                <p class="text-xs text-gray-400">2026.06.14 ~ 06.19 (6天5夜)</p>
+            </div>
+            <div id="weather-badge" class="bg-[#BC3E34] text-xs px-2.5 py-1 rounded-full flex items-center gap-1">
+                <i class="fas fa-sun"></i> <span>晴天之國</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="p-4">
+        <div id="page-schedule" class="page-section">
+            <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar sticky top-[68px] bg-white py-2 z-40 shadow-sm -mx-4 px-4">
+                <button onclick="switchDay(1)" id="day-btn-1" class="day-btn shrink-0 bg-[#1E2736] text-white px-4 py-2 rounded-xl text-sm font-medium">D1 (6/14)</button>
+                <button onclick="switchDay(2)" id="day-btn-2" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D2 (6/15)</button>
+                <button onclick="switchDay(3)" id="day-btn-3" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D3 (6/16)🎂</button>
+                <button onclick="switchDay(4)" id="day-btn-4" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D4 (6/17)</button>
+                <button onclick="switchDay(5)" id="day-btn-5" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D5 (6/18)</button>
+                <button onclick="switchDay(6)" id="day-btn-6" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D6 (6/19)</button>
+            </div>
+
+            <div id="schedule-container">
+                </div>
+        </div>
+
+        <div id="page-ledger" class="page-section hidden">
+            <div class="bg-gradient-to-br from-[#1E2736] to-[#2D3A4F] text-white p-5 rounded-2xl shadow-md mb-6">
+                <p class="text-xs text-gray-300 tracking-wide uppercase">⚡ 雙人即時同步預算 (日幣)</p>
+                <h2 id="total-expense" class="text-3xl font-bold mt-1">¥0</h2>
+                <div class="w-full bg-gray-700 h-1.5 rounded-full mt-4 overflow-hidden">
+                    <div id="budget-progress" class="bg-[#BC3E34] h-1.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-400 mt-2">
+                    <span>已花費</span>
+                    <span>預算上限: ¥20,000 (交通基本預留)</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6">
+                <h3 class="text-sm font-bold text-gray-700 mb-3"><i class="fas fa-plus-circle text-[#BC3E34] mr-1"></i> 新增一筆開銷</h3>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <input type="text" id="exp-title" placeholder="項目 (如: 烤牡蠣)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-[#BC3E34]">
+                    <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-[#BC3E34]">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="exp-category" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-[#BC3E34]">
+                        <option value="交通">🚌 交通</option>
+                        <option value="美食">🍱 美食</option>
+                        <option value="購物">🛍️ 購物</option>
+                        <option value="門票">🎟️ 門票/其他</option>
+                    </select>
+                    <button onclick="addExpense()" class="bg-[#BC3E34] text-white rounded-lg text-sm font-bold active:scale-95 transition-transform">加入雲端記帳</button>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <h3 class="text-sm font-bold text-gray-500 tracking-wider uppercase mb-1">消費明細歷史</h3>
+                <div id="expense-list" class="space-y-2">
+                    </div>
+            </div>
+        </div>
+
+        <div id="page-info" class="page-section hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-plane text-blue-500"></i> 航班資訊</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex justify-between bg-gray-50 p-2 rounded-lg">
+                        <span><strong>去程 IT214</strong> (06/14)</span>
+                        <span class="text-blue-600 font-medium">11:30 桃園 → 15:05 岡山</span>
+                    </div>
+                    <div class="flex justify-between bg-gray-50 p-2 rounded-lg">
+                        <span><strong>回程 IT241</strong> (06/19)</span>
+                        <span class="text-blue-600 font-medium">10:55 福岡 → 12:25 桃園</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-hotel text-green-500"></i> 飯店下榻</h3>
+                <div class="space-y-3 text-sm text-gray-600">
+                    <div class="border-l-4 border-red-400 pl-3">
+                        <p class="font-bold text-gray-800">岡山後樂酒店 (Okayama Koraku Hotel)</p>
+                        <p class="text-xs text-gray-500">入住: 06/14 - 06/16 (2晚) | 16:30可Check In</p>
+                    </div>
+                    <div class="border-l-4 border-blue-400 pl-3">
+                        <p class="font-bold text-gray-800">HOTEL GRANVIA HIROSHIMA SOUTH GATE</p>
+                        <p class="text-xs text-gray-500">入住: 06/16 - 06/18 (2晚) | 車站共構超方便</p>
+                    </div>
+                    <div class="border-l-4 border-purple-400 pl-3">
+                        <p class="font-bold text-gray-800">JR九州福岡花博酒店 (Blossom Hakata)</p>
+                        <p class="text-xs text-gray-500">入住: 06/18 - 06/19 (1晚) | 博多站旁</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-phone-alt text-red-500"></i> 緊急聯絡 & 備忘</h3>
+                <div class="text-sm text-gray-600 space-y-1.5">
+                    <p>📞 台北駐大阪經濟文化辦事處: +81-6-6443-8481</p>
+                    <p>📞 日本緊急求助電話: 110 (警察) / 119 (消防救護)</p>
+                    <p>📌 端午節連假出遊，機場人潮多，建議提早 2.5 - 3 小時抵達櫃檯。</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-2.5 shadow-lg z-50 safe-bottom">
+        <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-medium active-tab w-full transition-colors">
+            <i class="fas fa-map-marked-alt text-lg mb-0.5"></i>行程
+        </button>
+        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full transition-colors">
+            <i class="fas fa-wallet text-lg mb-0.5"></i>雙人記帳
+        </button>
+        <button onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full transition-colors">
+            <i class="fas fa-info-circle text-lg mb-0.5"></i>重要資訊
+        </button>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+        // 1. 妳專屬的 Firebase 金鑰連動
+        const firebaseConfig = {
+            apiKey: "AIzaSyDc9xXYYTCpOzKk_N03dQZCfO2OkPOn-U8",
+            authDomain: "japan-travel-202606.firebaseapp.com",
+            databaseURL: "https://japan-travel-202606-default-rtdb.firebaseio.com",
+            projectId: "japan-travel-202606",
+            storageBucket: "japan-travel-202606.firebasestorage.app",
+            messagingSenderId: "688622010243",
+            appId: "1:688622010243:web:7371df5d2f301f6e4bc0b6"
+        };
+
+        // 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const expenseRef = database.ref('expenses');
+
+        // 2. 行程靜態資料庫 (整合必吃、必買與自動導航連結)
+        const travelData = {
+            1: {
+                location: "岡山", weather: "晴天 24°C ~ 28°C",
+                items: [
+                    { time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214，準時出發！", cost: 0 },
+                    { time: "15:55-16:25", type: "transport", title: "機場接駁巴士", desc: "機場2號乘車處 → 岡山站西口21號乘車處", cost: 1000 },
+                    { time: "16:30-17:00", type: "hotel", title: "岡山後樂酒店 CHECK IN", desc: "從車站東口步行前往，放行李稍作休息。", cost: 0, nav: "Okayama Koraku Hotel" },
+                    { time: "17:00-21:30", type: "spot", title: "逛岡山一番街 & Sunste 岡山", desc: "中四國規模最大地下街！<br>🔥<strong>必吃晚餐推薦：</strong><br>• 南館2F <strong>麵屋匠</strong> (在地人氣拉麵，推薦韭黃拉麵)<br>• 南館1F <strong>讚岐男子烏龍</strong> (高湯拌烏龍)<br>• 南館2F <strong>吾妻壽司</strong> (招牌岡山地物入12貫)", cost: 0, nav: "岡山一番街" }
+                ]
+            },
+            2: {
+                location: "倉敷美觀", weather: "多雲時晴 23°C ~ 27°C",
+                items: [
+                    { time: "09:03-09:33", type: "transport", title: "岡山站 → 倉敷站", desc: "搭乘 JR 山陽本線 或 伯備線。", cost: 330 },
+                    { time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "💡<strong>景點故事：</strong>江戶時代的白壁土藏老街，充滿古典水鄉風情。<br>📌<strong>重要攻略：</strong>抵達後<strong>一定要先去觀光導覽所預約船班</strong>(每30分鐘一班，12:00-13:00休息)，不然絕對搭不到！<br>🛍️<strong>必買伴手禮：</strong>七福神饅頭。", cost: 700, nav: "倉敷美觀地區" },
+                    { time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "• <strong>珈琲館三宅商店：</strong>招牌平價咖哩飯老宅套餐。<br>• <strong>有鄰庵：</strong>每日限量的<strong>微笑幸福布丁</strong>與生蛋拌飯！", cost: 0, nav: "三宅商店 倉敷" },
+                    { time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。晚餐在 Ario 美食街解決。", cost: 0, nav: "三井小鎮奧特萊斯 倉敷" },
+                    { time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。", cost: 330 }
+                ]
+            },
+            3: {
+                location: "廣島 (🎂 生日快樂！)", weather: "晴天 25°C ~ 30°C",
+                items: [
+                    { time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡<strong>景點故事：</strong>因黑色外牆被稱為「烏城」。生日早晨散步好去處。", cost: 160, nav: "岡山城" },
+                    { time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。", cost: 5610 },
+                    { time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！", cost: 0, nav: "HOTEL GRANVIA HIROSHIMA" },
+                    { time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "💡<strong>景點故事：</strong>世界文化遺產，見證人類歷史的重要地標。紀念館門票¥200，可自由參觀。", cost: 200, nav: "原爆圓頂屋" },
+                    { time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥<strong>必吃美食：</strong>位於 ekie 百貨 1 樓美食街，體驗最正宗的廣島燒！<br>🛍️<strong>必買伴手禮亮顯：紅葉饅頭、楓糖紅葉費南雪、桐葉菜、瀨戶田檸檬蛋糕</strong>。", cost: 0, nav: "麗ちゃん 廣島燒" }
+                ]
+            },
+            4: {
+                location: "宮島嚴島神社", weather: "晴朗 24°C ~ 29°C",
+                items: [
+                    { time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。", cost: 420 },
+                    { time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡<strong>攻略：</strong>此時段渡輪航線會特地<strong>靠近海上大鳥居</strong>，記得站在右側甲板拍照！", cost: 200 },
+                    { time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "看可愛的江豚與宮島特色海洋生物。", cost: 0, nav: "宮島水族館" },
+                    { time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "💡<strong>景點故事：</strong>1400年歷史的海上鳥居神殿。<br>🔥<strong>必吃清單：みやじま食堂鰻魚飯、紅葉堂炸紅葉饅頭、烤牡蠣</strong>。<br>☕ 記得去<strong>星巴克嚴島表參道店</strong>買宮島限定馬克杯！", cost: 500, nav: "嚴島神社" },
+                    { time: "16:30-17:30", type: "spot", title: "【大鳥居乾潮奇景】下海合照", desc: "🚨<strong>重要時刻：</strong>今日 17:15 為最低潮位(-4CM)，<strong>可直接步行走到大鳥居正下方觸摸拍照！</strong>", cost: 0, nav: "嚴島大鳥居" },
+                    { time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續逛商商場吃晚餐。", cost: 420 }
+                ]
+            },
+            5: {
+                location: "博多", weather: "局部多雲 23°C ~ 28°C",
+                items: [
+                    { time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "橫跨九州！抵達後行李先寄放車站(¥300~1000)。", cost: 8570 },
+                    { time: "11:10-12:30", type: "restaurant", title: "午餐：博多一幸舍總本店 或 大地烏龍麵", desc: "• <strong>博多一幸舍：</strong>正宗濃郁泡沫系博多豚骨拉麵。<br>• <strong>大地烏龍麵：</strong>朝日大樓 B2，必點超大牛蒡天婦羅烏龍麵！", cost: 0, nav: "博多一幸舎 總本店" },
+                    { time: "14:00-21:00", type: "spot", title: "博多運河城 & 天神區大爆買", desc: "入住福岡花博酒店後開始逛街。藥妝推薦 COSMOS 天神大丸店。<br>🔥<strong>晚餐推薦：吉塚鰻魚屋</strong> 或是 <strong>豚そば月や本店</strong>(清湯系豚骨拉麵)。", cost: 0, nav: "博多運河城" }
+                ]
+            },
+            6: {
+                location: "福岡機場 (端午連假)", weather: "多雲 22°C ~ 26°C",
+                items: [
+                    { time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場接駁直達巴士。", cost: 310 },
+                    { time: "08:55-10:55", type: "spot", title: "機場出境準備 & 最後血拼", desc: "端午連假出境人潮多，免稅店補貨明太子與筑紫持。早餐在機場解決。", cost: 0, nav: "福岡機場 國際線航廈" },
+                    { time: "10:55-12:25", type: "transport", title: "福岡機場 → 桃園機場 (IT241)", desc: "搭乘台灣虎航返回溫暖的家，結束完美的旅程！", cost: 0 }
+                ]
+            }
+        };
+
+        // 3. 頁面導航切換
+        function navTo(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('nav button').forEach(el => el.classList.remove('active-tab'));
+            document.querySelectorAll('nav button').forEach(el => el.classList.add('text-gray-400'));
+            
+            const activeBtn = document.getElementById(`nav-${pageId}`);
+            activeBtn.classList.add('active-tab');
+            activeBtn.classList.remove('text-gray-400');
+        }
+
+        // 4. 渲染行程卡片
+        function switchDay(dayNum) {
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('bg-[#1E2736]', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-600');
+            });
+            const activeBtn = document.getElementById(`day-btn-dayNum-${dayNum}`) || document.getElementById(`day-btn-${dayNum}`);
+            activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
+            activeBtn.classList.add('bg-[#1E2736]', 'text-white');
+
+            const data = travelData[dayNum];
+            document.getElementById('weather-badge').innerHTML = `<i class="fas fa-cloud-sun"></i> <span>${data.location} · ${data.weather}</span>`;
+
+            let html = '';
+            data.items.forEach(item => {
+                let typeIcon = 'fa-map-marker-alt';
+                let typeColor = 'bg-blue-500';
+                let tagText = '景點';
+
+                if(item.type === 'transport') { typeIcon = 'fa-bus'; typeColor = 'bg-amber-500'; tagText = '交通'; }
+                else if(item.type === 'hotel') { typeIcon = 'fa-hotel'; typeColor = 'bg-emerald-500'; tagText = '住宿'; }
+                else if(item.type === 'restaurant') { typeIcon = 'fa-utensils'; typeColor = 'bg-red-500'; tagText = '餐廳'; }
+
+                html += `
+                    <div class="bg-white rounded-xl p-4 mb-3 border border-gray-100 shadow-sm relative overflow-hidden flex gap-3">
+                        <div class="flex flex-col items-center shrink-0">
+                            <span class="text-xs font-bold text-[#1E2736] bg-gray-100 px-2 py-0.5 rounded">${item.time}</span>
+                            <div class="w-0.5 bg-gray-200 grow my-2"></div>
+                        </div>
+                        <div class="grow">
+                            <div class="flex justify-between items-start gap-1">
+                                <span class="text-xs font-bold text-white ${typeColor} px-2 py-0.5 rounded-md mb-1 inline-block">${tagText}</span>
+                                ${item.cost > 0 ? `<span class="text-xs font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">¥${item.cost}</span>` : ''}
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm mt-0.5">${item.title}</h4>
+                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">${item.desc}</p>
+                        </div>
+                        ${item.nav ? `
+                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nav)}" target="_blank" class="self-center ml-auto bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors">
+                                <i class="fas fa-location-arrow text-base"></i>
+                            </a>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            document.getElementById('schedule-container').innerHTML = html;
+        }
+
+        //
