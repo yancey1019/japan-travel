@@ -96,12 +96,12 @@
                 <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-plane text-blue-500"></i> 航班資訊</h3>
                 <div class="space-y-2 text-sm text-gray-600">
                     <div class="flex justify-between bg-gray-50 p-2 rounded-lg">
-                        <span><strong>去程 IT214</strong> (06/14)</span>
-                        <span class="text-blue-600 font-medium">11:30 桃園 → 15:05 岡山</span>
+                        <span><strong>去程 IT214</strong> (06/14) [cite: 1, 2]</span>
+                        <span class="text-blue-600 font-medium">11:30 桃園 → 15:05 岡山 [cite: 2]</span>
                     </div>
                     <div class="flex justify-between bg-gray-50 p-2 rounded-lg">
-                        <span><strong>回程 IT241</strong> (06/19)</span>
-                        <span class="text-blue-600 font-medium">10:55 福岡 → 12:25 桃園</span>
+                        <span><strong>回程 IT241</strong> (06/19) [cite: 5]</span>
+                        <span class="text-blue-600 font-medium">10:55 福岡 → 12:25 桃園 [cite: 5]</span>
                     </div>
                 </div>
             </div>
@@ -109,16 +109,16 @@
                 <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-hotel text-green-500"></i> 飯店下榻</h3>
                 <div class="space-y-3 text-sm text-gray-600">
                     <div class="border-l-4 border-red-400 pl-3">
-                        <p class="font-bold text-gray-800">岡山後樂酒店 (Okayama Koraku Hotel)</p>
-                        <p class="text-xs text-gray-500">入住: 06/14 - 06/16 (2晚) | 16:30可Check In</p>
+                        <p class="font-bold text-gray-800">岡山後樂酒店 (Okayama Koraku Hotel) [cite: 2]</p>
+                        <p class="text-xs text-gray-500">入住: 06/14 - 06/16 (2晚) | 16:30可Check In [cite: 2, 4]</p>
                     </div>
                     <div class="border-l-4 border-blue-400 pl-3">
-                        <p class="font-bold text-gray-800">HOTEL GRANVIA HIROSHIMA SOUTH GATE</p>
-                        <p class="text-xs text-gray-500">入住: 06/16 - 06/18 (2晚) | 車站共構超方便</p>
+                        <p class="font-bold text-gray-800">HOTEL GRANVIA HIROSHIMA SOUTH GATE [cite: 4]</p>
+                        <p class="text-xs text-gray-500">入住: 06/16 - 06/18 (2晚) | 車站共構超方便 [cite: 4, 5]</p>
                     </div>
                     <div class="border-l-4 border-purple-400 pl-3">
-                        <p class="font-bold text-gray-800">JR九州福岡花博酒店 (Blossom Hakata)</p>
-                        <p class="text-xs text-gray-500">入住: 06/18 - 06/19 (1晚) | 博多站旁</p>
+                        <p class="font-bold text-gray-800">JR九州福岡花博酒店 (Blossom Hakata) [cite: 5]</p>
+                        <p class="text-xs text-gray-500">入住: 06/18 - 06/19 (1晚) | 博多站旁 [cite: 5]</p>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                 <div class="text-sm text-gray-600 space-y-1.5">
                     <p>📞 台北駐大阪經濟文化辦事處: +81-6-6443-8481</p>
                     <p>📞 日本緊急求助電話: 110 (警察) / 119 (消防救護)</p>
-                    <p>📌 端午節連假期出遊，機場人潮多，建議提早 2.5 - 3 小時抵達櫃檯。</p>
+                    <p>📌 端午節連假出遊，機場人潮多，建議提早 2.5 - 3 小時抵達櫃檯 [cite: 5]。</p>
                 </div>
             </div>
         </div>
@@ -170,58 +170,57 @@
             1: {
                 location: "岡山", weather: "晴天 24°C ~ 28°C",
                 items: [
-                    { time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214 [cite: 2]，準時出發！", cost: 0 },
+                    { time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214，準時出發！ [cite: 2]", cost: 0 },
                     { time: "15:55-16:25", type: "transport", title: "機場接駁巴士", desc: "機場2號乘車處 → 岡山站西口21號乘車處 [cite: 2]", cost: 1000 },
-                    { time: "16:30-17:00", type: "hotel", title: "岡山後樂酒店 CHECK IN", desc: "從車站東口步行前往，放行李稍作休息。[cite: 2]", cost: 0, nav: "Okayama Koraku Hotel" },
-                    { time: "17:00-21:30", type: "spot", title: "逛岡山一番街 & Sunste 岡山", desc: "中四國規模最大地下街！[cite: 2]<br>🔥<strong>必吃晚餐推薦：</strong><br>• 南館2F <strong>麵屋匠</strong> (在地人氣拉麵，推薦韭黃拉麵 [cite: 2])<br>• 南館1F <strong>讚岐男子烏龍</strong> (高湯拌烏龍 [cite: 2])<br>• 南館2F <strong>吾妻壽司</strong> (招牌岡山地物入12貫 [cite: 2])", cost: 0, nav: "岡山一番街" }
+                    { time: "16:30-17:00", type: "hotel", title: "岡山後樂酒店 CHECK IN", desc: "從車站東口步行前往，放行李稍作休息。 [cite: 2]", cost: 0, nav: "Okayama Koraku Hotel" },
+                    { time: "17:00-21:30", type: "spot", title: "逛岡山一番街 & Sunste 岡山", desc: "中四國規模最大地下街！ [cite: 2]<br>🔥<strong>必吃晚餐推薦：</strong> [cite: 2]<br>• 南館2F <strong>麵屋匠</strong> (在地人氣拉麵，推薦韭黃拉麵) [cite: 2]<br>• 南館1F <strong>讚岐男子烏龍</strong> (高湯拌烏龍) [cite: 2]<br>• 南館2F <strong>吾妻壽司</strong> (招牌岡山地物入12貫) [cite: 2]", cost: 0, nav: "岡山一番街" }
                 ]
             },
             2: {
                 location: "倉敷美觀", weather: "多雲時晴 23°C ~ 27°C",
                 items: [
-                    { time: "09:03-09:33", type: "transport", title: "岡山站 → 倉敷站", desc: "搭乘 JR 山陽本線 或 伯備線。[cite: 2]", cost: 330 },
-                    { time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "💡<strong>景點故事：</strong>江戶時代的白壁土藏老街，充滿古典水鄉風情。[cite: 2]<br>📌<strong>重要攻略：</strong>抵達後<strong>一定要先去觀光導覽所預約船班</strong>(每30分鐘一班，12:00-13:00休息)，不然絕對搭不到！[cite: 2]<br>🛍️<strong>必買伴手禮：</strong>七福神饅頭。[cite: 2]", cost: 700, nav: "倉敷美觀地區" },
-                    { time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "• <strong>珈琲館三宅商店：</strong>招牌平價咖哩飯老宅套餐。[cite: 2]<br>• <strong>有鄰庵：</strong>最有名的是<strong>微笑幸福布丁</strong>與生蛋拌飯！[cite: 2]", cost: 0, nav: "三宅商店 倉敷" },
-                    { time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。Ario才有餐廳，吃晚餐。[cite: 2]", cost: 0, nav: "三井小鎮奧特萊斯 倉敷" },
-                    { time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。[cite: 2]", cost: 330 }
+                    { time: "09:03-09:33", type: "transport", title: "岡山站 → 倉敷站", desc: "搭乘 JR 山陽本線 或 伯備線。 [cite: 2]", cost: 330 },
+                    { time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "💡<strong>景點故事：</strong>江戶時代的白壁土藏老街，充滿古典水鄉風情 [cite: 2]。<br>📌<strong>重要攻略：</strong>抵達後<strong>一定要先去觀光導覽所預約船班</strong>(每30分鐘一班，12:00-13:00休息)，不然絕對搭不到 [cite: 2]！<br>🛍️<strong>必買伴手禮：</strong>七福神饅頭 [cite: 2]。", cost: 700, nav: "倉敷美觀地區" },
+                    { time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "• <strong>珈琲館三宅商店：</strong>招牌平價咖哩飯老宅套餐 [cite: 2]。<br>• <strong>有鄰庵：</strong>最有名的是<strong>微笑幸福布丁</strong>與生蛋拌飯 [cite: 2]！", cost: 0, nav: "三宅商店 倉敷" },
+                    { time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。Ario才有餐廳，吃晚餐。 [cite: 2]", cost: 0, nav: "三井小鎮奧特萊斯 倉敷" },
+                    { time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。 [cite: 2]", cost: 330 }
                 ]
             },
             3: {
                 location: "廣島 (🎂 生日快樂！)", weather: "晴天 25°C ~ 30°C",
                 items: [
-                    { time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡<strong>景點故事：</strong>因黑色外牆被稱為「烏城」。路面電車至城下站，生日早晨散步好去處。[cite: 4]", cost: 160, nav: "岡山城" },
-                    { time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。[cite: 4]", cost: 5610 },
-                    { time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！[cite: 4]", cost: 0, nav: "HOTEL GRANVIA HIROSHIMA" },
-                    { time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "💡<strong>景點故事：</strong>世界文化遺產，見證人類歷史的重要地標。資料館門票¥200，可自由參觀。[cite: 4]", cost: 200, nav: "原爆圓頂屋" },
-                    { time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥<strong>必吃美食：</strong>位於 ekie 或新百貨 minamoa 內，體驗最正宗的廣島燒！[cite: 4]<br>🛍️<strong>必買伴手禮亮顯：紅葉饅頭、楓糖紅葉費南雪、桐葉菜、瀨戶田檸檬蛋糕</strong>。[cite: 4]", cost: 0, nav: "麗ちゃん 廣島燒" }
+                    { time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡<strong>景點故事：</strong>因黑色外牆被稱為「烏城」。路面電車至城下站，生日早晨散步好去處。 [cite: 4]", cost: 160, nav: "岡山城" },
+                    { time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。 [cite: 4]", cost: 5610 },
+                    { time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！ [cite: 4]", cost: 0, nav: "HOTEL GRANVIA HIROSHIMA" },
+                    { time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "💡<strong>景點故事：</strong>世界文化遺產，見證人類歷史的重要地標。資料館門票¥200，可自由參觀。 [cite: 4]", cost: 200, nav: "原爆圓頂屋" },
+                    { time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥<strong>必吃美食：</strong>位於 ekie 或新百貨 minamoa 內，體驗最正宗的廣島燒 [cite: 4]！<br>🛍️<strong>必買伴手禮亮顯：紅葉饅頭、楓糖紅葉費南雪、桐葉菜、瀨戶田檸檬蛋糕</strong> [cite: 4]。", cost: 0, nav: "麗ちゃん 廣島燒" }
                 ]
             },
             4: {
                 location: "宮島嚴島神社", weather: "晴朗 24°C ~ 29°C",
                 items: [
-                    { time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。[cite: 4]", cost: 420 },
-                    { time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡<strong>攻略：</strong>09:10~16:10間航行會接近海上大鳥居 [cite: 4]，記得站在右側甲板拍照！", cost: 200 },
-                    { time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "沿途可逛商店街，參觀水族館。[cite: 4]", cost: 0, nav: "宮島水族館" },
-                    { time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "💡<strong>景點故事：</strong>1400年歷史的海上鳥居神殿。[cite: 4]<br>🔥<strong>必吃清單：みやじま食堂鰻魚飯、紅葉堂炸紅葉饅頭、烤牡蠣</strong>。[cite: 4]<br>☕ 記得去<strong>星巴克嚴島表參道店</strong>買宮島限定馬克杯！[cite: 4]", cost: 500, nav: "嚴島神社" },
-                    { time: "16:30-17:30", type: "spot", title: "【大鳥居乾潮奇景】下海合照", desc: "🚨<strong>重要時刻：</strong>今日 17:15 為最低潮位(-4CM) [cite: 5]，可靠近鳥居拍照 [cite: 5]！", cost: 0, nav: "嚴島大鳥居" },
-                    { time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續吃晚餐與買伴手禮。[cite: 5]", cost: 420 }
+                    { time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。 [cite: 4]", cost: 420 },
+                    { time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡<strong>攻略：</strong>09:10~16:10間航行會接近海上大鳥居，記得站在右側甲板拍照 [cite: 4]！", cost: 200 },
+                    { time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "沿途可逛商店街，參觀水族館。 [cite: 4]", cost: 0, nav: "宮島水族館" },
+                    { time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "💡<strong>景點故事：</strong>1400年歷史的海上鳥居神殿 [cite: 4]。<br>🔥<strong>必吃清單：みやじま食堂鰻魚飯、紅葉堂炸紅葉饅頭、烤牡蠣</strong> [cite: 4]。<br>☕ 記得去<strong>星巴克嚴島表參道店</strong>買宮島限定馬克杯 [cite: 4]！", cost: 500, nav: "嚴島神社" },
+                    { time: "16:30-17:30", type: "spot", title: "【大鳥居乾潮奇景】下海合照", desc: "🚨<strong>重要時刻：</strong>今日 17:15 為最低潮位(-4CM)，可靠近鳥居拍照 [cite: 5]！", cost: 0, nav: "嚴島大鳥居" },
+                    { time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續吃晚餐與買伴手禮。 [cite: 5]", cost: 420 }
                 ]
             },
             5: {
                 location: "博多", weather: "局部多雲 23°C ~ 28°C",
                 items: [
-                    { time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "新幹線前往博多。抵達後行李先寄放車站(¥300~1000)。[cite: 5]", cost: 8570 },
-                    { time: "11:10-12:30", type: "restaurant", title: "午餐：博多一幸舍總本店 或 大地烏龍麵", desc: "• <strong>博多一幸舍：</strong>正宗濃郁博多拉麵。[cite: 5]<br>• <strong>大地烏龍麵：</strong>朝日大樓 B2，打泡天婦羅烏龍麵！[cite: 5]", cost: 0, nav: "博多一幸舎 總本店" },
-                    { time: "14:00-21:00", type: "spot", title: "博多運河城 & 天神區大爆買", desc: "入住福岡花博酒店後開始逛街。藥妝推薦 COSMOS 天神大丸店。[cite: 5]<br>🔥
-<strong>晚餐/宵夜推薦：吉塚鰻魚屋</strong> 或是 <strong>豚そば月や本店</strong>、警固神社藍瓶咖啡。[cite: 5]", cost: 0, nav: "博多運河城" }
+                    { time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "新幹線前往博多。抵達後行李先寄放車站(¥300~1000)。 [cite: 5]", cost: 8570 },
+                    { time: "11:10-12:30", type: "restaurant", title: "午餐：博多一幸舍總本店 或 大地烏龍麵", desc: "• <strong>博多一幸舍：</strong>正宗濃郁博多拉麵 [cite: 5]。<br>• <strong>大地烏龍麵：</strong>朝日大樓 B2，打泡天婦羅烏龍麵 [cite: 5]！", cost: 0, nav: "博多一幸舎 總本店" },
+                    { time: "14:00-21:00", type: "spot", title: "博多運河城 & 天神區大爆買", desc: "入住福岡花博酒店後開始逛街。藥妝推薦 COSMOS 天神大丸店 [cite: 5]。<br>🔥<strong>晚餐/宵夜推薦：吉塚鰻魚屋</strong> 或是 <strong>豚そば月や本店</strong>、警固神社藍瓶咖啡 [cite: 5]。", cost: 0, nav: "博多運河城" }
                 ]
             },
             6: {
                 location: "福岡機場 (端午連假)", weather: "多雲 22°C ~ 26°C",
                 items: [
-                    { time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場巴士。[cite: 5]", cost: 310 },
-                    { time: "08:55-10:55", type: "spot", title: "機場出境準備", desc: "吃早餐與準備出境 [cite: 5]。", cost: 0, nav: "福岡機場 國際線航廈" },
-                    { time: "10:55-12:25", type: "transport", title: "福岡機場 → 桃園機場 (IT241)", desc: "搭乘台灣虎航返回 [cite: 5]，結束完美旅程！", cost: 0 }
+                    { time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場巴士。 [cite: 5]", cost: 310 },
+                    { time: "08:55-10:55", type: "spot", title: "機場出境準備", desc: "吃早餐與準備出境。 [cite: 5]", cost: 0, nav: "福岡機場 國際線航廈" },
+                    { time: "10:55-12:25", type: "transport", title: "福岡機場 → 桃園機場 (IT241)", desc: "搭乘台灣虎航返回，結束完美旅程！ [cite: 5]", cost: 0 }
                 ]
             }
         };
@@ -256,13 +255,19 @@
 
             let html = '';
             data.items.forEach(item => {
-                let typeIcon = 'fa-map-marker-alt';
                 let typeColor = 'bg-blue-500';
                 let tagText = '景點';
 
-                if(item.type === 'transport') { typeIcon = 'fa-bus'; typeColor = 'bg-amber-500'; tagText = '交通'; }
-                else if(item.type === 'hotel') { typeIcon = 'fa-hotel'; typeColor = 'bg-emerald-500'; tagText = '住宿'; }
-                else if(item.type === 'restaurant') { typeIcon = 'fa-utensils'; typeColor = 'bg-red-500'; tagText = '餐廳'; }
+                if(item.type === 'transport') { typeColor = 'bg-amber-500'; tagText = '交通'; }
+                else if(item.type === 'hotel') { typeColor = 'bg-emerald-500'; tagText = '住宿'; }
+                else if(item.type === 'restaurant') { typeColor = 'bg-red-500'; tagText = '餐廳'; }
+
+                // 修正導航連結寫法，徹底避免字串解析錯誤
+                let navHtml = '';
+                if (item.nav) {
+                    let mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav);
+                    navHtml = '<a href="' + mapUrl + '" target="_blank" class="self-center ml-auto bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors"><i class="fas fa-location-arrow text-base"></i></a>';
+                }
 
                 html += `
                     <div class="bg-white rounded-xl p-4 mb-3 border border-gray-100 shadow-sm relative overflow-hidden flex gap-3 text-left">
@@ -278,11 +283,7 @@
                             <h4 class="font-bold text-gray-800 text-sm mt-0.5">${item.title}</h4>
                             <p class="text-xs text-gray-500 mt-1 leading-relaxed">${item.desc}</p>
                         </div>
-                        ${item.nav ? `
-                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nav)}" target="_blank" class="self-center ml-auto bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors">
-                                <i class="fas fa-location-arrow text-base"></i>
-                            </a>
-                        ` : ''}
+                        ${navHtml}
                     </div>
                 `;
             });
@@ -355,7 +356,7 @@
             listContainer.innerHTML = html;
             document.getElementById('total-expense').innerText = `¥${total.toLocaleString()}`;
             
-            // 計算進度條 (以基本交通費預算 20,000 為標準) [cite: 6]
+            // 計算進度條 (以基本交通費預算 20,000 為標準)
             let progress = (total / 20000) * 100;
             if(progress > 100) progress = 100;
             document.getElementById('budget-progress').style.width = `${progress}%`;
