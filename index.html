@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>岡山廣島福岡自由行 2026</title>
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="apple-touch-icon" href="https://yancey1019.github.io/japan-travel/icon.png">
+    <link rel="icon" type="image/png" href="https://yancey1019.github.io/japan-travel/icon.png">
     
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght=400;500;700&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -23,7 +26,7 @@
             color: #BC3E34; /* 鳥居朱紅 */
             border-bottom: 3px solid #BC3E34;
         }
-        /* 隱藏滾動條但保持功能 */
+        /* 隱藏滾動條 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -53,8 +56,41 @@
                 <button onclick="switchDay(6)" id="day-btn-6" class="day-btn shrink-0 bg-gray-100 text-gray-600 px-4 py-2 rounded-xl text-sm font-medium">D6 (6/19)</button>
             </div>
 
+            <p class="text-[11px] text-gray-400 mb-2 text-center"><i class="fas fa-info-circle mr-1"></i>小提示：直接「點擊行程卡片」即可進行線上修改內容</p>
+
             <div id="schedule-container">
                 </div>
+
+            <div class="bg-white p-4 rounded-xl border border-dashed border-gray-300 shadow-sm mt-8 mb-4">
+                <h3 class="text-sm font-bold text-gray-700 mb-3"><i class="fas fa-calendar-plus text-[#1E2736] mr-1"></i> ➕ 新增全新行程卡片</h3>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <select id="sch-day" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                        <option value="1">第一天 (6/14)</option>
+                        <option value="2">第二天 (6/15)</option>
+                        <option value="3">第三天 (6/16)</option>
+                        <option value="4">第四天 (6/17)</option>
+                        <option value="5">第五天 (6/18)</option>
+                        <option value="6">第六天 (6/19)</option>
+                    </select>
+                    <input type="text" id="sch-time" placeholder="時間 (如: 14:00-15:30)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <select id="sch-type" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                        <option value="spot">🎯 景點</option>
+                        <option value="restaurant">🍱 餐廳</option>
+                        <option value="transport">🚌 交通</option>
+                        <option value="hotel">🏨 住宿</option>
+                    </select>
+                    <input type="text" id="sch-nav" placeholder="地圖導航搜尋地標(選填)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                </div>
+                <div class="mb-3">
+                    <input type="text" id="sch-title" placeholder="行程標題" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                </div>
+                <div class="mb-3">
+                    <textarea id="sch-desc" rows="2" placeholder="詳細說明或攻略備忘..." class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none"></textarea>
+                </div>
+                <button onclick="addCustomSchedule()" class="w-full bg-[#1E2736] text-white p-2.5 rounded-lg text-sm font-bold active:scale-98 transition-transform">將新行程推送到兩端手機</button>
+            </div>
         </div>
 
         <div id="page-ledger" class="page-section hidden">
@@ -73,11 +109,11 @@
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6">
                 <h3 class="text-sm font-bold text-gray-700 mb-3"><i class="fas fa-plus-circle text-[#BC3E34] mr-1"></i> 新增一筆開銷</h3>
                 <div class="grid grid-cols-2 gap-3 mb-3">
-                    <input type="text" id="exp-title" placeholder="項目 (如: 烤牡蠣)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-[#BC3E34]">
-                    <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-[#BC3E34]">
+                    <input type="text" id="exp-title" placeholder="項目 (如: 烤牡蠣)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <input type="number" id="exp-amount" placeholder="金額 (JPY)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <select id="exp-category" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-[#BC3E34]">
+                    <select id="exp-category" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
                         <option value="交通">🚌 交通</option>
                         <option value="美食">🍱 美食</option>
                         <option value="購物">🛍️ 購物</option>
@@ -89,8 +125,7 @@
 
             <div class="space-y-3">
                 <h3 class="text-sm font-bold text-gray-500 tracking-wider uppercase mb-1">消費明細歷史</h3>
-                <div id="expense-list" class="space-y-2">
-                    </div>
+                <div id="expense-list" class="space-y-2"></div>
             </div>
         </div>
 
@@ -117,7 +152,7 @@
                     </div>
                     <div class="border-l-4 border-blue-400 pl-3">
                         <p class="font-bold text-gray-800">HOTEL GRANVIA HIROSHIMA SOUTH GATE</p>
-                        <p class="text-xs text-gray-500">入住: 06/16 - 06/18 (2晚) | 車站共構超方便</p>
+                        <p class="text-xs text-gray-500">入住: 06/16 - 06/18 (2晚) | 車站共構</p>
                     </div>
                     <div class="border-l-4 border-purple-400 pl-3">
                         <p class="font-bold text-gray-800">JR九州福岡花博酒店 (Blossom Hakata)</p>
@@ -129,21 +164,76 @@
                 <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-phone-alt text-red-500"></i> 緊急聯絡 & 備忘</h3>
                 <div class="text-sm text-gray-600 space-y-1.5">
                     <p>📞 台北駐大阪經濟文化辦事處: +81-6-6443-8481</p>
-                    <p>📞 日本緊急求助電話: 110 (警察) / 119 (消防救護)</p>
+                    <p>📞 日本緊急求助電話: 110 / 119</p>
                     <p>📌 端午節連假出遊，機場人潮多，建議提早 2.5 - 3 小時抵達櫃檯。</p>
                 </div>
             </div>
         </div>
     </main>
 
+    <div id="edit-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50 backdrop-blur-xs">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl animate-fade-in-up">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-4">
+                <h3 class="font-bold text-gray-800 text-base"><i class="fas fa-edit text-[#BC3E34] mr-1"></i> 修改行程內容</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 text-lg p-1">&times;</button>
+            </div>
+            <input type="hidden" id="edit-key">
+            
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">天數</label>
+                    <select id="edit-day" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                        <option value="1">D1 (6/14)</option>
+                        <option value="2">D2 (6/15)</option>
+                        <option value="3">D3 (6/16)🎂</option>
+                        <option value="4">D4 (6/17)</option>
+                        <option value="5">D5 (6/18)</option>
+                        <option value="6">D6 (6/19)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">時間</label>
+                    <input type="text" id="edit-time" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">分類</label>
+                    <select id="edit-type" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                        <option value="spot">🎯 景點</option>
+                        <option value="restaurant">🍱 餐廳</option>
+                        <option value="transport">🚌 交通</option>
+                        <option value="hotel">🏨 住宿</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">地圖導航地標</label>
+                    <input type="text" id="edit-nav" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="text-[11px] font-bold text-gray-400 block mb-1">行程標題</label>
+                <input type="text" id="edit-title" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none">
+            </div>
+            <div class="mb-4">
+                <label class="text-[11px] font-bold text-gray-400 block mb-1">說明與備忘</label>
+                <textarea id="edit-desc" rows="3" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeEditModal()" class="w-1/3 border border-gray-200 text-gray-500 rounded-xl text-sm font-medium py-2.5">取消</button>
+                <button onclick="saveScheduleUpdate()" class="w-2/3 bg-[#BC3E34] text-white rounded-xl text-sm font-bold py-2.5 shadow-md active:scale-98 transition-transform">儲存並即時更新</button>
+            </div>
+        </div>
+    </div>
+
     <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-2.5 shadow-lg z-50 safe-bottom">
-        <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-medium active-tab w-full transition-colors">
+        <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-medium active-tab w-full">
             <i class="fas fa-map-marked-alt text-lg mb-0.5"></i>行程
         </button>
-        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full transition-colors">
+        <button onclick="navTo('ledger')" id="nav-ledger" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full">
             <i class="fas fa-wallet text-lg mb-0.5"></i>雙人記帳
         </button>
-        <button onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full transition-colors">
+        <button onclick="navTo('info')" id="nav-info" class="flex flex-col items-center gap-0.5 text-xs font-medium text-gray-400 w-full">
             <i class="fas fa-info-circle text-lg mb-0.5"></i>重要資訊
         </button>
     </nav>
@@ -167,82 +257,61 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const expenseRef = database.ref('expenses');
+        const scheduleRef = database.ref('schedules');
 
-        // 2. 行程靜態資料庫 (整合必吃、必買與自動導航連結)
-        const travelData = {
-            1: {
-                location: "岡山", weather: "晴天 24°C ~ 28°C",
-                items: [
-                    { time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214，準時出發！", cost: 0 },
-                    { time: "15:55-16:25", type: "transport", title: "機場接駁巴士", desc: "機場2號乘車處 → 岡山站西口21號乘車處", cost: 1000 },
-                    { time: "16:30-17:00", type: "hotel", title: "岡山後樂酒店 CHECK IN", desc: "從車站東口步行前往，放行李稍作休息。", cost: 0, nav: "Okayama Koraku Hotel" },
-                    { time: "17:00-21:30", type: "spot", title: "逛岡山一番街 & Sunste 岡山", desc: "中四國規模最大地下街！<br>🔥<strong>必吃晚餐推薦：</strong><br>• 南館2F <strong>麵屋匠</strong> (在地人氣拉麵，推薦韭黃拉麵)<br>• 南館1F <strong>讚岐男子烏龍</strong> (高湯拌烏龍)<br>• 南館2F <strong>吾妻壽司</strong> (招牌岡山地物入12貫)", cost: 0, nav: "岡山一番街" }
-                ]
-            },
-            2: {
-                location: "倉敷美觀", weather: "多雲時晴 23°C ~ 27°C",
-                items: [
-                    { time: "09:03-09:33", type: "transport", title: "岡山站 → 倉敷站", desc: "搭乘 JR 山陽本線 或 伯備線。", cost: 330 },
-                    { time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "💡<strong>景點故事：</strong>江戶時代的白壁土藏老街，充滿古典水鄉風情。<br>📌<strong>重要攻略：</strong>抵達後<strong>一定要先去觀光導覽所預約船班</strong>(每30分鐘一班，12:00-13:00休息)，不然絕對搭不到！<br>🛍️<strong>必買伴手禮：</strong>七福神饅頭。", cost: 700, nav: "倉敷美觀地區" },
-                    { time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "• <strong>珈琲館三宅商店：</strong>招牌平價咖哩飯老宅套餐。<br>• <strong>有鄰庵：</strong>最有名的是<strong>微笑幸福布丁</strong>與生蛋拌飯！", cost: 0, nav: "三宅商店 倉敷" },
-                    { time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。Ario才有餐廳，吃晚餐。", cost: 0, nav: "三井小鎮奧特慢斯 倉敷" },
-                    { time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。", cost: 330 }
-                ]
-            },
-            3: {
-                location: "廣島 (🎂 生日快樂！)", weather: "晴天 25°C ~ 30°C",
-                items: [
-                    { time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡<strong>景點故事：</strong>因黑色外牆被稱為「烏城」。路面電車至城下站，生日早晨散步好去處。", cost: 160, nav: "岡山城" },
-                    { time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。", cost: 5610 },
-                    { time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！", cost: 0, nav: "HOTEL GRANVIA HIROSHIMA" },
-                    { time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "💡<strong>景點故事：</strong>世界文化遺產，見證人類歷史的重要地標。資料館門票¥200，可自由參觀。", cost: 200, nav: "原爆圓頂屋" },
-                    { time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥<strong>必吃美食：</strong>位於 ekie 或新百貨 minamoa 內，體驗最正宗的廣島燒！<br>🛍️<strong>必買伴手禮亮顯：紅葉饅頭、楓糖紅葉費南雪、桐葉菜、瀨戶田檸檬蛋糕</strong>。", cost: 0, nav: "麗ちゃん 廣島燒" }
-                ]
-            },
-            4: {
-                location: "宮島嚴島神社", weather: "晴朗 24°C ~ 29°C",
-                items: [
-                    { time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。", cost: 420 },
-                    { time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡<strong>攻略：</strong>09:10~16:10間航行會接近海上大鳥居，記得站在右側甲板拍照！", cost: 200 },
-                    { time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "沿途可逛商店街，參觀水族館。", cost: 0, nav: "宮島水族館" },
-                    { time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "💡<strong>景點故事：</strong>1400年歷史的海上鳥居神殿。<br>🔥<strong>必吃清單：みやじま食堂鰻魚飯、紅葉堂炸紅葉饅頭、烤牡蠣</strong>。<br>☕ 記得去<strong>星巴克嚴島表參道店</strong>買宮島限定馬克杯！", cost: 500, nav: "嚴島神社" },
-                    { time: "16:30-17:30", type: "spot", title: "【大鳥居乾潮奇景】下海合照", desc: "🚨<strong>重要時刻：</strong>今日 17:15 為最低潮位(-4CM)，可靠近鳥居拍照！", cost: 0, nav: "嚴島大鳥居" },
-                    { time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續吃晚餐與買伴手禮。", cost: 420 }
-                ]
-            },
-            5: {
-                location: "博多", weather: "局部多雲 23°C ~ 28°C",
-                items: [
-                    { time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "新幹線前往博多.抵達後行李先寄放車站(¥300~1000)。", cost: 8570 },
-                    { time: "11:10-12:30", type: "restaurant", title: "午餐：博多一幸舍總本店 或 大地烏龍麵", desc: "• <strong>博多一幸舍：</strong>正宗濃郁博多拉麵。<br>• <strong>大地烏龍麵：</strong>朝日大樓 B2，打泡天婦羅烏龍麵！", cost: 0, nav: "博多一幸舎 總本店" },
-                    { time: "14:00-21:00", type: "spot", title: "博多運河城 & 天神區大爆買", desc: "入住福岡花博酒店後開始逛街。藥妝推薦 COSMOS 天神大丸店。<br>🔥<strong>晚餐/宵夜推薦：吉塚鰻魚屋</strong> 或是 <strong>豚そば月や本店</strong>、警固神社藍瓶咖啡。", cost: 0, nav: "博多運河城" }
-                ]
-            },
-            6: {
-                location: "福岡機場 (端午連假)", weather: "多雲 22°C ~ 26°C",
-                items: [
-                    { time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場巴士。", cost: 310 },
-                    { time: "08:55-10:55", type: "spot", title: "機場出境準備", desc: "吃早餐與準備出境。", cost: 0, nav: "福岡機場 國際線航廈" },
-                    { time: "10:55-12:25", type: "transport", title: "福岡機場 → 桃園機場 (IT241)", desc: "搭乘台灣虎航返回，結束完美旅程！", cost: 0 }
-                ]
+        // 預設基礎行程庫（若雲端全新空白時自動載入）
+        const defaultSchedules = [
+            { day: 1, time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214，準時出發！", nav: "" },
+            { day: 1, time: "15:55-16:25", type: "transport", title: "機場接駁巴士", desc: "機場2號乘車處 → 岡山站西口21號乘車處 (日幣 1000)", nav: "" },
+            { day: 1, time: "16:30-17:00", type: "hotel", title: "岡山後樂酒店 CHECK IN", desc: "從車站東口步行前往，放行李稍作休息。", nav: "Okayama Koraku Hotel" },
+            { day: 1, time: "17:00-21:30", type: "spot", title: "逛岡山一番街 & Sunste 岡山", desc: "🔥必吃晚餐推薦：麵屋匠拉麵、讚岐男子烏龍、吾妻壽司。", nav: "岡山一番街" },
+            { day: 2, time: "09:03-09:33", type: "transport", title: "岡山站 → 倉敷站", desc: "搭乘 JR 山陽本線 或 伯備線。", nav: "" },
+            { day: 2, time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "📌重要攻略：抵達後一定要先去觀光導覽所預約船班(日幣 700)。必買：七福神饅頭。", nav: "倉敷美觀地區" },
+            { day: 2, time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "三宅商店平價咖哩；有鄰庵限量微笑幸福布丁！", nav: "三宅商店 倉敷" },
+            { day: 2, time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。Ario才有餐廳可以吃晚餐。", nav: "三井小鎮奧特萊斯 倉敷" },
+            { day: 2, time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。", nav: "" },
+            { day: 3, time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡🎂 生日快樂！路面電車至城下站，散步好去處。", nav: "岡山城" },
+            { day: 3, time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。", nav: "" },
+            { day: 3, time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！", nav: "HOTEL GRANVIA HIROSHIMA" },
+            { day: 3, time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "世界文化遺產。資料館門票¥200。", nav: "原爆圓頂屋" },
+            { day: 3, time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥必吃美食！🛍️必買伴手禮：紅葉饅頭、楓糖紅葉費南雪、桐葉菜、瀨戶田檸檬蛋糕。", nav: "麗ちゃん 廣島燒" },
+            { day: 4, time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。", nav: "" },
+            { day: 4, time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡攻略：此時段渡輪航線會特地靠近海上大鳥居！", nav: "" },
+            { day: 4, time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "沿途可逛商店街，參觀水族館。", nav: "宮島水族館" },
+            { day: 4, time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "🔥必吃：みやじま食堂鰻魚飯、炸紅葉饅頭、烤牡蠣。星巴克買限定杯！", nav: "嚴島神社" },
+            { day: 4, time: "16:30-17:30", type: "spot", title: "【大鳥居乾潮奇景】下海合照", desc: "🚨重要時刻：今日 17:15 最低潮位(-4CM)，可靠近鳥居拍照！", nav: "嚴島大鳥居" },
+            { day: 4, time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續吃晚餐與買伴手禮。", nav: "" },
+            { day: 5, time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "新幹線前往博多。抵達後行李先寄放車站。", nav: "" },
+            { day: 5, time: "11:10-12:30", type: "restaurant", title: "午餐：博多一幸舍總本店 或 大地烏龍麵", desc: "泡沫系博多拉麵 或 必點超大牛蒡天婦羅烏龍麵！", nav: "博多一幸舎 總本店" },
+            { day: 5, time: "14:00-21:00", type: "spot", title: "博多運河城 & 天神區大爆買", desc: "藥妝推薦 COSMOS 天神大丸店。🔥晚餐推薦：吉塚鰻魚屋 或是 豚そば月や本店。", nav: "博多運河城" },
+            { day: 6, time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場巴士。", nav: "" },
+            { day: 6, time: "08:55-10:55", type: "spot", title: "機場出境準備", desc: "吃早餐與準備出境。端午連假人潮多，請多預留時間。", nav: "福岡機場 國際線航廈" },
+            { day: 6, time: "10:55-12:25", type: "transport", title: "福岡機場 → 桃園機場 (IT241)", desc: "搭乘台灣虎航返回，結束完美旅程！", nav: "" }
+        ];
+
+        let globalSchedules = [];
+        let currentActiveDay = 1;
+
+        scheduleRef.once('value', (snapshot) => {
+            if (!snapshot.exists()) {
+                defaultSchedules.forEach(item => scheduleRef.push(item));
             }
-        };
+        });
 
-        // 3. 頁面導航切換
         function navTo(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(`page-${pageId}`).classList.remove('hidden');
-            
-            document.querySelectorAll('nav button').forEach(el => el.classList.remove('active-tab'));
-            document.querySelectorAll('nav button').forEach(el => el.classList.add('text-gray-400'));
-            
+            document.querySelectorAll('nav button').forEach(el => {
+                el.classList.remove('active-tab');
+                el.classList.add('text-gray-400');
+            });
             const activeBtn = document.getElementById(`nav-${pageId}`);
             activeBtn.classList.add('active-tab');
             activeBtn.classList.remove('text-gray-400');
         }
 
-        // 4. 渲染行程卡片
         function switchDay(dayNum) {
+            currentActiveDay = dayNum;
             document.querySelectorAll('.day-btn').forEach(btn => {
                 btn.classList.remove('bg-[#1E2736]', 'text-white');
                 btn.classList.add('bg-gray-100', 'text-gray-600');
@@ -252,81 +321,187 @@
                 activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
                 activeBtn.classList.add('bg-[#1E2736]', 'text-white');
             }
+            renderScheduleCards();
+        }
 
-            const data = travelData[dayNum];
-            document.getElementById('weather-badge').innerHTML = `<i class="fas fa-cloud-sun"></i> <span>${data.location} · ${data.weather}</span>`;
+        function renderScheduleCards() {
+            const dayNum = currentActiveDay;
+            const dayItems = globalSchedules.filter(item => item.day == dayNum);
+            dayItems.sort((a, b) => a.time.localeCompare(b.time));
+
+            let locText = "行程"; let weatherText = "☀️ 晴朗 24°C ~ 29°C";
+            if(dayNum == 1) { locText = "岡山"; weatherText = "晴天 24°C ~ 28°C"; }
+            else if(dayNum == 2) { locText = "倉敷美觀"; weatherText = "多雲時晴 23°C ~ 27°C"; }
+            else if(dayNum == 3) { locText = "廣島 (🎂生日！)"; weatherText = "晴天 25°C ~ 30°C"; }
+            else if(dayNum == 4) { locText = "宮島嚴島"; weatherText = "晴朗 24°C ~ 29°C"; }
+            else if(dayNum == 5) { locText = "博多天神"; weatherText = "局部多雲 23°C ~ 28°C"; }
+            else if(dayNum == 6) { locText = "福岡機場"; weatherText = "多雲 22°C ~ 26°C"; }
+
+            document.getElementById('weather-badge').innerHTML = `<i class="fas fa-cloud-sun"></i> <span>${locText} · ${weatherText}</span>`;
 
             let html = '';
-            data.items.forEach(item => {
-                let typeColor = 'bg-blue-500';
-                let tagText = '景點';
+            if (dayItems.length === 0) {
+                html = `<p class="text-xs text-gray-400 text-center py-12 border border-dashed border-gray-200 rounded-xl bg-gray-50">今天目前沒有安排行程，在下方新增一筆吧！</p>`;
+            } else {
+                dayItems.forEach(item => {
+                    let typeColor = 'bg-blue-500'; let tagText = '景點';
+                    if(item.type === 'transport') { typeColor = 'bg-amber-500'; tagText = '交通'; }
+                    else if(item.type === 'hotel') { typeColor = 'bg-emerald-500'; tagText = '住宿'; }
+                    else if(item.type === 'restaurant') { typeColor = 'bg-red-500'; tagText = '餐廳'; }
 
-                if(item.type === 'transport') { typeColor = 'bg-amber-500'; tagText = '交通'; }
-                else if(item.type === 'hotel') { typeColor = 'bg-emerald-500'; tagText = '住宿'; }
-                else if(item.type === 'restaurant') { typeColor = 'bg-red-500'; tagText = '餐廳'; }
+                    let navHtml = '';
+                    if (item.nav) {
+                        let mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav);
+                        navHtml = '<a href="' + mapUrl + '" target="_blank" onclick="event.stopPropagation();" class="self-center bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors"><i class="fas fa-location-arrow text-base"></i></a>';
+                    }
 
-                let navHtml = '';
-                if (item.nav) {
-                    let mapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.nav);
-                    navHtml = '<a href="' + mapUrl + '" target="_blank" class="self-center ml-auto bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors"><i class="fas fa-location-arrow text-base"></i></a>';
-                }
-
-                html += `
-                    <div class="bg-white rounded-xl p-4 mb-3 border border-gray-100 shadow-sm relative overflow-hidden flex gap-3 text-left">
-                        <div class="flex flex-col items-center shrink-0">
-                            <span class="text-xs font-bold text-[#1E2736] bg-gray-100 px-2 py-0.5 rounded">${item.time}</span>
-                            <div class="w-0.5 bg-gray-200 grow my-2"></div>
-                        </div>
-                        <div class="grow">
-                            <div class="flex justify-between items-start gap-1">
-                                <span class="text-xs font-bold text-white ${typeColor} px-2 py-0.5 rounded-md mb-1 inline-block">${tagText}</span>
-                                ${item.cost > 0 ? `<span class="text-xs font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">¥${item.cost}</span>` : ''}
+                    // 綁定 onclick 觸發原地彈窗編輯
+                    html += `
+                        <div onclick="openEditModal('${item.id}')" class="bg-white rounded-xl p-4 mb-3 border border-gray-100 hover:border-gray-300 shadow-sm relative overflow-hidden flex gap-3 text-left transition-all active:bg-gray-50 cursor-pointer">
+                            <div class="flex flex-col items-center shrink-0">
+                                <span class="text-xs font-bold text-[#1E2736] bg-gray-100 px-2 py-0.5 rounded">${item.time}</span>
+                                <div class="w-0.5 bg-gray-200 grow my-2"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 text-sm mt-0.5">${item.title}</h4>
-                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">${item.desc}</p>
+                            <div class="grow pr-2">
+                                <div class="flex justify-between items-start gap-1">
+                                    <span class="text-xs font-bold text-white ${typeColor} px-2 py-0.5 rounded-md mb-1 inline-block">${tagText}</span>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mt-0.5">${item.title}</h4>
+                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">${item.desc}</p>
+                            </div>
+                            <div class="flex flex-col justify-between items-end shrink-0 gap-3">
+                                <button onclick="event.stopPropagation(); deleteSchedule('${item.id}')" class="text-gray-300 hover:text-red-500 transition-colors text-xs p-1">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                ${navHtml}
+                            </div>
                         </div>
-                        ${navHtml}
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
             document.getElementById('schedule-container').innerHTML = html;
         }
 
-        // 5. Firebase 雙人記帳邏輯
+        scheduleRef.on('value', (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                globalSchedules = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+            } else {
+                globalSchedules = [];
+            }
+            renderScheduleCards();
+        });
+
+        // 📥 打開彈窗並把原本舊資料塞進去
+        function openEditModal(key) {
+            const item = globalSchedules.find(sch => sch.id === key);
+            if (!item) return;
+
+            document.getElementById('edit-key').value = key;
+            document.getElementById('edit-day').value = item.day;
+            document.getElementById('edit-time').value = item.time;
+            document.getElementById('edit-type').value = item.type;
+            document.getElementById('edit-nav').value = item.nav || '';
+            document.getElementById('edit-title').value = item.title;
+            document.getElementById('edit-desc').value = item.desc || '';
+
+            const modal = document.getElementById('edit-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('edit-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // 💾 儲存修改：直接更新 Firebase 的該筆資料
+        function saveScheduleUpdate() {
+            const key = document.getElementById('edit-key').value;
+            const day = parseInt(document.getElementById('edit-day').value);
+            const time = document.getElementById('edit-time').value.trim() || "全天";
+            const type = document.getElementById('edit-type').value;
+            const nav = document.getElementById('edit-nav').value.trim();
+            const title = document.getElementById('edit-title').value.trim();
+            const desc = document.getElementById('edit-desc').value.trim();
+
+            if (!title) {
+                alert('行程標題不能為空！');
+                return;
+            }
+
+            // 直接更新雲端資料庫
+            database.ref(`schedules/${key}`).update({
+                day: day,
+                time: time,
+                type: type,
+                nav: nav,
+                title: title,
+                desc: desc
+            }, (error) => {
+                if (!error) {
+                    closeEditModal();
+                    // 如果改了天數，自動幫切換到新改的天數畫面
+                    if (day !== currentActiveDay) {
+                        switchDay(day);
+                    }
+                } else {
+                    alert('雲端更新失敗，請檢查網路連接！');
+                }
+            });
+        }
+
+        function addCustomSchedule() {
+            const day = parseInt(document.getElementById('sch-day').value);
+            const time = document.getElementById('sch-time').value.trim() || "全天";
+            const type = document.getElementById('sch-type').value;
+            const nav = document.getElementById('sch-nav').value.trim();
+            const title = document.getElementById('sch-title').value.trim();
+            const desc = document.getElementById('sch-desc').value.trim();
+
+            if (!title) { alert('請輸入行程標題！'); return; }
+
+            scheduleRef.push({
+                day: day, time: time, type: type, nav: nav, title: title, desc: desc
+            });
+
+            document.getElementById('sch-time').value = '';
+            document.getElementById('sch-nav').value = '';
+            document.getElementById('sch-title').value = '';
+            document.getElementById('sch-desc').value = '';
+            
+            switchDay(day);
+        }
+
+        function deleteSchedule(key) {
+            if (confirm('確定要從雲端刪除這個行程卡片嗎？（兩端手機會同步消失喔！）')) {
+                database.ref(`schedules/${key}`).remove();
+            }
+        }
+
+        // 6. Firebase 雙人記帳監聽（維持不變）
         function addExpense() {
             const title = document.getElementById('exp-title').value.trim();
             const amount = parseInt(document.getElementById('exp-amount').value);
             const category = document.getElementById('exp-category').value;
 
             if(!title || isNaN(amount) || amount <= 0) {
-                alert('請輸入正確的項目名稱與日幣金額！');
+                alert('請輸入項目名稱與日幣金額！');
                 return;
             }
 
-            // 推送到 Firebase 雲端
-            expenseRef.push({
-                title: title,
-                amount: amount,
-                category: category,
-                timestamp: Date.now()
-            });
-
-            // 清空輸入框
-            document.getElementById('exp-title').value = '';
-            document.getElementById('exp-amount').value = '';
+            expenseRef.push({ title: title, amount: amount, category: category, timestamp: Date.now() });
+            document.getElementById('exp-title').value = ''; document.getElementById('exp-amount').value = '';
         }
 
         function deleteExpense(key) {
-            if(confirm('確定要刪除這筆雲端開銷嗎？')) {
-                database.ref(`expenses/${key}`).remove();
-            }
+            if(confirm('確定要刪除這筆雲端開銷嗎？')) { database.ref(`expenses/${key}`).remove(); }
         }
 
-        // 監聽 Firebase 資料庫變動 (即時同步)
         expenseRef.on('value', (snapshot) => {
             const listContainer = document.getElementById('expense-list');
-            let total = 0;
-            let html = '';
+            let total = 0; let html = '';
 
             if(snapshot.exists()) {
                 const data = snapshot.val();
@@ -356,13 +531,11 @@
 
             listContainer.innerHTML = html;
             document.getElementById('total-expense').innerText = `¥${total.toLocaleString()}`;
-            
             let progress = (total / 20000) * 100;
             if(progress > 100) progress = 100;
             document.getElementById('budget-progress').style.width = `${progress}%`;
         });
 
-        // 初始化載入第一天行程
         switchDay(1);
     </script>
 </body>
