@@ -58,7 +58,7 @@
 
             <p class="text-[11px] text-gray-400 mb-2 text-center"><i class="fas fa-info-circle mr-1"></i>小提示：直接「點擊行程卡片」即可修改內容與預算費用</p>
 
-            <div id="schedule-container">
+            <div id="schedule-container" class="space-y-3">
                 </div>
 
             <div class="bg-white p-4 rounded-xl border border-dashed border-gray-300 shadow-sm mt-8 mb-4">
@@ -81,7 +81,7 @@
                         <option value="transport">🚌 交通</option>
                         <option value="hotel">🏨 住宿</option>
                     </select>
-                    <input type="text" id="sch-cost" placeholder="交通/門票費用 (如: 1000日幣)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                    <input type="text" id="sch-cost" placeholder="費用 (如: 160日幣)" class="border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
                 </div>
                 <div class="mb-3">
                     <input type="text" id="sch-nav" placeholder="地圖導航搜尋地標(選填)" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
@@ -210,8 +210,8 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-[11px] font-bold text-gray-400 block mb-1">交通/門票費用顯示</label>
-                    <input type="text" id="edit-cost" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none" placeholder="如: 1000日幣">
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">預估費用金額</label>
+                    <input type="text" id="edit-cost" class="w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none" placeholder="如: 160日幣">
                 </div>
             </div>
             <div class="mb-3">
@@ -264,32 +264,39 @@
         const expenseRef = database.ref('expenses');
         const scheduleRef = database.ref('schedules');
 
-        // 預設基礎行程庫（內建補上原本對應的交通/門票費用）
+        // 預設基礎行程庫（已校對並完整補上第3天漏掉的路面電車交通資訊）
         const defaultSchedules = [
             { day: 1, time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214，準時出發！", nav: "", cost: "" },
             { day: 1, time: "15:55-16:25", type: "transport", title: "機場接駁巴士", desc: "機場2號乘車處 → 岡山站西口21號乘車處", nav: "", cost: "1000日幣" },
             { day: 1, time: "16:30-17:00", type: "hotel", title: "岡山後樂酒店 CHECK IN", desc: "從車站東口步行前往，放行李稍作休息。", nav: "Okayama Koraku Hotel", cost: "" },
             { day: 1, time: "17:00-21:30", type: "spot", title: "逛岡山一番街 & Sunste 岡山", desc: "🔥必吃晚餐推薦：麵屋匠拉麵、讚岐男子烏龍、吾妻壽司。", nav: "岡山一番街", cost: "" },
             { day: 2, time: "09:03-09:33", type: "transport", title: "岡山站 → 倉敷站", desc: "搭乘 JR 山陽本線 或 伯備線。", nav: "", cost: "330日幣" },
-            { day: 2, time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "📌重要攻略：抵達後一定要先去觀光導覽所預約船班(日幣 700)。必買：七福神饅頭。", nav: "倉敷美觀地區", cost: "700日幣(船)" },
+            { day: 2, time: "09:35-12:00", type: "spot", title: "倉敷美觀地區漫步 + 漫遊船", desc: "📌重要攻略：抵達後一定要先去觀光導覽所預約船班(日幣 700)。必買：七福神饅頭。", nav: "倉敷美觀地區", cost: "700日幣" },
             { day: 2, time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "三宅商店平價咖哩；有鄰庵限量微笑幸福布丁！", nav: "三宅商店 倉敷", cost: "" },
             { day: 2, time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。Ario才有餐廳可以吃晚餐。", nav: "三井小鎮奧特萊斯 倉敷", cost: "" },
             { day: 2, time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。", nav: "", cost: "330日幣" },
-            { day: 3, time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡🎂 生日快樂！路面電車至城下站，散步好去處。", nav: "岡山城", cost: "400日幣" },
-            { day: 3, time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。", nav: "", cost: "廣島周遊券" },
+            
+            // 🚨 第 3 天完整補上漏掉的路面電車與其車資行程
+            { day: 3, time: "09:09-09:16", type: "transport", title: "路面電車：西川綠道公園站 → 城下站", desc: "搭乘路面電車前往岡山城週遭。", nav: "", cost: "160日幣" },
+            { day: 3, time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡🎂 生日快樂！生日早晨散步好去處。", nav: "岡山城", cost: "" },
+            { day: 3, time: "10:25-10:27", type: "transport", title: "路面電車：城下站 → 西川綠道公園站", desc: "搭乘路面電車折返回飯店附近。", nav: "", cost: "160日幣" },
+            { day: 3, time: "10:30-11:00", type: "hotel", title: "飯店 CHECK OUT", desc: "岡山後樂酒店退房辦理。", nav: "", cost: "" },
+            { day: 3, time: "11:00-13:30", type: "spot", title: "逛岡山站內商店街 & 吃午餐", desc: "買伴手禮或逛 Aeon Mall，吃完午餐準備移動。", nav: "", cost: "" },
+            { day: 3, time: "13:48-14:27", type: "transport", title: "新幹線特急：岡山 → 廣島", desc: "搭乘新幹線25號(博多行)，快速舒適。", nav: "", cost: "5610日幣" },
             { day: 3, time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！", nav: "HOTEL GRANVIA HIROSHIMA", cost: "" },
             { day: 3, time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "世界文化遺產。資料館門票¥200。", nav: "原爆圓頂屋", cost: "200日幣" },
             { day: 3, time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥必吃美食！🛍️必買伴手禮：紅葉饅頭、楓糖紅葉費南雪。", nav: "麗ちゃん 廣島燒", cost: "" },
-            { day: 4, time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。", nav: "", cost: "廣島周遊券" },
-            { day: 4, time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡攻略：此時段渡輪航線會特地靠近海上大鳥居！", nav: "", cost: "渡輪稅100日幣" },
+            
+            { day: 4, time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。", nav: "", cost: "420日幣" },
+            { day: 4, time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡攻略：此時段渡輪航線會特地靠近海上大鳥居！", nav: "", cost: "200日幣" },
             { day: 4, time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "沿途可逛商店街，參觀水族館。", nav: "宮島水族館", cost: "" },
-            { day: 4, time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "🔥必吃：みやじま食堂鰻魚飯、炸紅葉饅頭。星巴克買限定杯！", nav: "嚴島神社", cost: "500日幣(套票)" },
+            { day: 4, time: "13:30-16:30", type: "spot", title: "嚴島神社 & 表參道老街", desc: "🔥必吃：みやじま食堂鰻魚飯、炸紅葉饅頭。星巴克買限定杯！", nav: "嚴島神社", cost: "500日幣" },
             { day: 4, time: "16:30-17:30", type: "spot", title: "【大鳥居乾潮奇景】下海合照", desc: "🚨重要時刻：今日 17:15 最低潮位(-4CM)，可靠近鳥居拍照！", nav: "嚴島大鳥居", cost: "" },
-            { day: 4, time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續吃晚餐與買伴手禮。", nav: "" },
-            { day: 5, time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "新幹線前往博多。抵達後行李先寄放車站。", nav: "", cost: "廣島周遊券" },
+            { day: 4, time: "18:32-19:15", type: "transport", title: "宮島口 → 返回廣島站", desc: "搭乘 JR 返回廣島站，繼續吃晚餐與買伴手禮。", nav: "", cost: "420日幣" },
+            { day: 5, time: "09:30-10:36", type: "transport", title: "新幹線：廣島 → 博多站", desc: "新幹線前往博多。抵達後行李先寄放車站。", nav: "", cost: "8570日幣" },
             { day: 5, time: "11:10-12:30", type: "restaurant", title: "午餐：博多一幸舍總本店", desc: "泡沫系博多拉麵 或 大地烏龍麵超大牛蒡天婦羅！", nav: "博多一幸舎 總本店", cost: "" },
             { day: 5, time: "14:00-21:00", type: "spot", title: "博多運河城 & 天神區大爆買", desc: "藥妝推薦 COSMOS 天神大丸店。🔥晚餐推薦：吉塚鰻魚屋。", nav: "博多運河城", cost: "" },
-            { day: 6, time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場巴士。", nav: "", cost: "270日幣" },
+            { day: 6, time: "08:05-08:27", type: "transport", title: "博多站 → 福岡機場國際線", desc: "於筑紫口外搭乘兩節式機場巴士。", nav: "", cost: "310日幣" },
             { day: 6, time: "08:55-10:55", type: "spot", title: "機場出境準備", desc: "吃早餐與準備出境。端午連假人潮多，請多預留時間。", nav: "福岡機場 國際線航廈", cost: "" },
             { day: 6, time: "10:55-12:25", type: "transport", title: "福岡機場 → 桃園機場 (IT241)", desc: "搭乘台灣虎航返回，結束完美旅程！", nav: "", cost: "" }
         ];
@@ -297,6 +304,7 @@
         let globalSchedules = [];
         let currentActiveDay = 1;
 
+        // 如果雲端資料庫行程是空的話自動預載
         scheduleRef.once('value', (snapshot) => {
             if (!snapshot.exists()) {
                 defaultSchedules.forEach(item => scheduleRef.push(item));
@@ -360,20 +368,20 @@
                         navHtml = '<a href="' + mapUrl + '" target="_blank" onclick="event.stopPropagation();" class="self-center bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors"><i class="fas fa-location-arrow text-base"></i></a>';
                     }
 
-                    // 💰 費用標籤邏輯
+                    // 🚨 視覺超級進化：改用朱紅色高飽和度極顯眼標籤
                     let costHtml = '';
                     if (item.cost && item.cost.trim() !== "") {
-                        costHtml = `<span class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md ml-2"><i class="fas fa-coins mr-0.5"></i> 費用: ${item.cost}</span>`;
+                        costHtml = `<span class="text-[11px] font-bold text-white bg-[#BC3E34] px-2 py-0.5 rounded-full ml-auto shadow-xs"><i class="fas fa-yen-sign mr-0.5"></i>${item.cost}</span>`;
                     }
 
                     html += `
-                        <div onclick="openEditModal('${item.id}')" class="bg-white rounded-xl p-4 mb-3 border border-gray-100 hover:border-gray-300 shadow-sm relative overflow-hidden flex gap-3 text-left transition-all active:bg-gray-50 cursor-pointer">
+                        <div onclick="openEditModal('${item.id}')" class="bg-white rounded-xl p-4 border border-gray-100 hover:border-gray-300 shadow-xs relative overflow-hidden flex gap-3 text-left transition-all active:bg-gray-50 cursor-pointer">
                             <div class="flex flex-col items-center shrink-0">
                                 <span class="text-xs font-bold text-[#1E2736] bg-gray-100 px-2 py-0.5 rounded">${item.time}</span>
                                 <div class="w-0.5 bg-gray-200 grow my-2"></div>
                             </div>
-                            <div class="grow pr-2">
-                                <div class="flex items-center gap-1 mb-1">
+                            <div class="grow pr-1">
+                                <div class="flex justify-between items-center gap-1 mb-1.5">
                                     <span class="text-xs font-bold text-white ${typeColor} px-2 py-0.5 rounded-md inline-block">${tagText}</span>
                                     ${costHtml}
                                 </div>
