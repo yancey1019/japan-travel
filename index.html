@@ -4,35 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>岡山廣島福岡自由行 2026</title>
-    
+
     <link rel="manifest" href="manifest.json">
-    
     <link rel="apple-touch-icon" href="https://yancey1019.github.io/japan-travel/icon.png">
     <link rel="icon" type="image/png" href="https://yancey1019.github.io/japan-travel/icon.png">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght=400;500;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #F7F6F3; /* 日式和風米白 */
+            background-color: #F7F6F3;
             -webkit-tap-highlight-color: transparent;
         }
         .active-tab {
-            color: #BC3E34; /* 鳥居朱紅 */
+            color: #BC3E34;
             border-bottom: 3px solid #BC3E34;
         }
-        /* 隱藏滾動條 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="pb-24 max-w-md mx-auto bg-white shadow-xl min-h-screen relative">
 
+    <!-- 🔒 專屬登入遮罩 (第一次開啟時驗證，驗證後自動隱藏) -->
+    <div id="auth-overlay" class="fixed inset-0 bg-[#1E2736] z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center">
+            <div class="w-12 h-12 bg-[#BC3E34] text-white rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fas fa-torii-gate"></i>
+            </div>
+            <h2 class="text-lg font-bold text-gray-800">山陽九州縱走 App</h2>
+            <p class="text-xs text-gray-400 mt-1 mb-5">請輸入指定 Email 登入以解鎖專屬行程與記帳</p>
+
+            <div class="space-y-3 text-left">
+                <div>
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">電子郵件</label>
+                    <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-gray-400 block mb-1">密碼</label>
+                    <input type="password" id="login-pass" placeholder="••••••••" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:outline-none">
+                </div>
+                <p id="login-error" class="text-xs text-red-500 hidden text-center"></p>
+                <button onclick="handleLogin()" class="w-full bg-[#BC3E34] text-white p-2.5 rounded-xl font-bold text-sm shadow-md active:scale-98 transition-transform mt-2">驗證身份並登入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頂部 App Bar -->
     <header class="bg-[#1E2736] text-white p-4 sticky top-0 z-50 shadow-md safe-top">
         <div class="flex justify-between items-center">
             <div>
@@ -45,7 +68,9 @@
         </div>
     </header>
 
+    <!-- 主內容區 -->
     <main id="main-content" class="p-4">
+        <!-- 行程頁面 -->
         <div id="page-schedule" class="page-section">
             <div class="flex gap-2 overflow-x-auto pb-3 mb-4 no-scrollbar sticky top-[68px] bg-white py-2 z-40 shadow-sm -mx-4 px-4">
                 <button onclick="switchDay(1)" id="day-btn-1" class="day-btn shrink-0 bg-[#1E2736] text-white px-4 py-2 rounded-xl text-sm font-medium">D1 (6/14)</button>
@@ -58,8 +83,7 @@
 
             <p class="text-[11px] text-gray-400 mb-2 text-center"><i class="fas fa-info-circle mr-1"></i>小提示：直接「點擊行程卡片」即可修改內容與預算費用</p>
 
-            <div id="schedule-container" class="space-y-3">
-                </div>
+            <div id="schedule-container" class="space-y-3"></div>
 
             <div class="bg-white p-4 rounded-xl border border-dashed border-gray-300 shadow-sm mt-8 mb-4">
                 <h3 class="text-sm font-bold text-gray-700 mb-3"><i class="fas fa-calendar-plus text-[#1E2736] mr-1"></i> ➕ 新增全新行程卡片</h3>
@@ -96,6 +120,7 @@
             </div>
         </div>
 
+        <!-- 記帳頁面 -->
         <div id="page-ledger" class="page-section hidden">
             <div class="bg-gradient-to-br from-[#1E2736] to-[#2D3A4F] text-white p-5 rounded-2xl shadow-md mb-6">
                 <p class="text-xs text-gray-300 tracking-wide uppercase">⚡ 雙人即時同步預算 (日幣)</p>
@@ -132,6 +157,7 @@
             </div>
         </div>
 
+        <!-- 重要資訊頁面 -->
         <div id="page-info" class="page-section hidden space-y-4">
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
                 <h3 class="font-bold text-gray-800 border-b pb-2 mb-3 flex items-center gap-2"><i class="fas fa-plane text-blue-500"></i> 航班資訊</h3>
@@ -174,6 +200,7 @@
         </div>
     </main>
 
+    <!-- 編輯 Modal -->
     <div id="edit-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50 backdrop-blur-xs">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl animate-fade-in-up">
             <div class="flex justify-between items-center border-b pb-2.5 mb-4">
@@ -233,6 +260,7 @@
         </div>
     </div>
 
+    <!-- 底部導航 -->
     <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-2.5 shadow-lg z-50 safe-bottom">
         <button onclick="navTo('schedule')" id="nav-schedule" class="flex flex-col items-center gap-0.5 text-xs font-medium active-tab w-full">
             <i class="fas fa-map-marked-alt text-lg mb-0.5"></i>行程
@@ -246,6 +274,7 @@
     </nav>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
@@ -260,11 +289,43 @@
         };
 
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const database = firebase.database();
-        const expenseRef = database.ref('expenses');
-        const scheduleRef = database.ref('schedules');
+        let expenseRef, scheduleRef;
 
-        // 預設基礎行程庫（已校對並完整補上第3天漏掉的路面電車交通資訊）
+        // 🔑 自動保持登入狀態監聽
+        auth.onAuthStateChanged((user) => {
+            const overlay = document.getElementById('auth-overlay');
+            if (user) {
+                overlay.classList.add('hidden'); // 已登入，自動隱藏登入遮罩
+                initDatabaseListeners();
+            } else {
+                overlay.classList.remove('hidden'); // 未登入，顯示登入視窗
+            }
+        });
+
+        function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            const errEl = document.getElementById('login-error');
+
+            if (!email || !pass) {
+                errEl.innerText = "請輸入 Email 和密碼！";
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            // 設定持久登入 (LOCAL = 永久保持登入)
+            auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+                .then(() => {
+                    return auth.signInWithEmailAndPassword(email, pass);
+                })
+                .catch((error) => {
+                    errEl.innerText = "登入失敗：Email 或密碼錯誤，或非授權帳號！";
+                    errEl.classList.remove('hidden');
+                });
+        }
+
         const defaultSchedules = [
             { day: 1, time: "11:30-15:05", type: "transport", title: "桃園機場 → 岡山桃太郎機場", desc: "班機 IT214，準時出發！", nav: "", cost: "" },
             { day: 1, time: "15:55-16:25", type: "transport", title: "機場接駁巴士", desc: "機場2號乘車處 → 岡山站西口21號乘車處", nav: "", cost: "1000日幣" },
@@ -275,8 +336,6 @@
             { day: 2, time: "12:00-13:00", type: "restaurant", title: "午餐：三宅商店 或 有鄰庵", desc: "三宅商店平價咖哩；有鄰庵限量微笑幸福布丁！", nav: "三宅商店 倉敷", cost: "" },
             { day: 2, time: "14:00-19:30", type: "spot", title: "三井OUTLET & Ario購物中心", desc: "由倉敷站北口步行3分鐘即達。Ario才有餐廳可以吃晚餐。", nav: "三井小鎮奧特萊斯 倉敷", cost: "" },
             { day: 2, time: "19:39-20:05", type: "transport", title: "倉敷站 → 返回岡山站", desc: "搭乘 JR 返回，隨後可去逛站內 YOURS 超市與唐吉訶德買零食。", nav: "", cost: "330日幣" },
-            
-            // 🚨 第 3 天完整補上漏掉的路面電車與其車資行程
             { day: 3, time: "09:09-09:16", type: "transport", title: "路面電車：西川綠道公園站 → 城下站", desc: "搭乘路面電車前往岡山城週遭。", nav: "", cost: "160日幣" },
             { day: 3, time: "09:20-10:20", type: "spot", title: "岡山城 & 烏城公園", desc: "💡🎂 生日快樂！生日早晨散步好去處。", nav: "岡山城", cost: "" },
             { day: 3, time: "10:25-10:27", type: "transport", title: "路面電車：城下站 → 西川綠道公園站", desc: "搭乘路面電車折返回飯店附近。", nav: "", cost: "160日幣" },
@@ -286,7 +345,6 @@
             { day: 3, time: "14:30-15:00", type: "hotel", title: "廣島格蘭比亞大飯店 CHECK IN", desc: "車站南口共構，放行李超級迅速！", nav: "HOTEL GRANVIA HIROSHIMA", cost: "" },
             { day: 3, time: "15:30-18:00", type: "spot", title: "原爆圓頂屋 & 和平紀念公園", desc: "世界文化遺產。資料館門票¥200。", nav: "原爆圓頂屋", cost: "200日幣" },
             { day: 3, time: "18:20-21:00", type: "restaurant", title: "生日晚餐：麗ちゃん廣島燒", desc: "🔥必吃美食！🛍️必買伴手禮：紅葉饅頭、楓糖紅葉費南雪。", nav: "麗ちゃん 廣島燒", cost: "" },
-            
             { day: 4, time: "09:08-09:50", type: "transport", title: "廣島站 → JR宮島口站", desc: "搭乘 JR 山陽本線。", nav: "", cost: "420日幣" },
             { day: 4, time: "10:10-10:25", type: "transport", title: "JR西日本宮島渡輪", desc: "💡攻略：此時段渡輪航線會特地靠近海上大鳥居！", nav: "", cost: "200日幣" },
             { day: 4, time: "11:30-13:30", type: "spot", title: "宮島水族館", desc: "沿途可逛商店街，參觀水族館。", nav: "宮島水族館", cost: "" },
@@ -304,12 +362,63 @@
         let globalSchedules = [];
         let currentActiveDay = 1;
 
-        // 如果雲端資料庫行程是空的話自動預載
-        scheduleRef.once('value', (snapshot) => {
-            if (!snapshot.exists()) {
-                defaultSchedules.forEach(item => scheduleRef.push(item));
-            }
-        });
+        function initDatabaseListeners() {
+            expenseRef = database.ref('expenses');
+            scheduleRef = database.ref('schedules');
+
+            scheduleRef.once('value', (snapshot) => {
+                if (!snapshot.exists()) {
+                    defaultSchedules.forEach(item => scheduleRef.push(item));
+                }
+            });
+
+            scheduleRef.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    globalSchedules = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+                } else {
+                    globalSchedules = [];
+                }
+                renderScheduleCards();
+            });
+
+            expenseRef.on('value', (snapshot) => {
+                const listContainer = document.getElementById('expense-list');
+                let total = 0; let html = '';
+
+                if(snapshot.exists()) {
+                    const data = snapshot.val();
+                    const items = Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse();
+
+                    items.forEach(item => {
+                        total += item.amount;
+                        html += `
+                            <div class="bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-lg">${item.category === '交通' ? '🚌' : item.category === '美食' ? '🍱' : item.category === '購物' ? '🛍' : '🎟️'}</span>
+                                    <div class="text-left">
+                                        <p class="text-sm font-bold text-gray-800">${item.title}</p>
+                                        <p class="text-[10px] text-gray-400">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-bold text-red-500">¥${item.amount.toLocaleString()}</span>
+                                    <button onclick="deleteExpense('${item.id}')" class="text-gray-300 hover:text-red-500 transition-colors text-xs p-1"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = `<p class="text-xs text-gray-400 text-center py-6">目前沒有開銷紀錄，開始記帳吧！</p>`;
+                }
+
+                listContainer.innerHTML = html;
+                document.getElementById('total-expense').innerText = `¥${total.toLocaleString()}`;
+                let progress = (total / 20000) * 100;
+                if(progress > 100) progress = 100;
+                document.getElementById('budget-progress').style.width = `${progress}%`;
+            });
+        }
 
         function navTo(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
@@ -368,7 +477,6 @@
                         navHtml = '<a href="' + mapUrl + '" target="_blank" onclick="event.stopPropagation();" class="self-center bg-gray-50 hover:bg-gray-100 p-2.5 rounded-full text-blue-600 transition-colors"><i class="fas fa-location-arrow text-base"></i></a>';
                     }
 
-                    // 🚨 視覺超級進化：改用朱紅色高飽和度極顯眼標籤
                     let costHtml = '';
                     if (item.cost && item.cost.trim() !== "") {
                         costHtml = `<span class="text-[11px] font-bold text-white bg-[#BC3E34] px-2 py-0.5 rounded-full ml-auto shadow-xs"><i class="fas fa-yen-sign mr-0.5"></i>${item.cost}</span>`;
@@ -400,16 +508,6 @@
             }
             document.getElementById('schedule-container').innerHTML = html;
         }
-
-        scheduleRef.on('value', (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                globalSchedules = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-            } else {
-                globalSchedules = [];
-            }
-            renderScheduleCards();
-        });
 
         function openEditModal(key) {
             const item = globalSchedules.find(sch => sch.id === key);
@@ -503,43 +601,6 @@
         function deleteExpense(key) {
             if(confirm('確定要刪除這筆雲端開銷嗎？')) { database.ref(`expenses/${key}`).remove(); }
         }
-
-        expenseRef.on('value', (snapshot) => {
-            const listContainer = document.getElementById('expense-list');
-            let total = 0; let html = '';
-
-            if(snapshot.exists()) {
-                const data = snapshot.val();
-                const items = Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse();
-
-                items.forEach(item => {
-                    total += item.amount;
-                    html += `
-                        <div class="bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <span class="text-lg">${item.category === '交通' ? '🚌' : item.category === '美食' ? '🍱' : item.category === '購物' ? '🛍' : '🎟️'}</span>
-                                <div class="text-left">
-                                    <p class="text-sm font-bold text-gray-800">${item.title}</p>
-                                    <p class="text-[10px] text-gray-400">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="text-sm font-bold text-red-500">¥${item.amount.toLocaleString()}</span>
-                                <button onclick="deleteExpense('${item.id}')" class="text-gray-300 hover:text-red-500 transition-colors text-xs p-1"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                html = `<p class="text-xs text-gray-400 text-center py-6">目前沒有開銷紀錄，開始記帳吧！</p>`;
-            }
-
-            listContainer.innerHTML = html;
-            document.getElementById('total-expense').innerText = `¥${total.toLocaleString()}`;
-            let progress = (total / 20000) * 100;
-            if(progress > 100) progress = 100;
-            document.getElementById('budget-progress').style.width = `${progress}%`;
-        });
 
         switchDay(1);
     </script>
